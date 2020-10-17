@@ -5,7 +5,7 @@ const pool = require('../db');
 // checks for valid session for each incoming request
 function checkSession (req, res) {
   if (!req.session.user || !req.cookies.user_key) {
-    res.redirect("http://localhost:3000/login");
+    res.redirect("https://eseos.herokuapp.com:3000/login");
     return false;
   }
   return true;
