@@ -25,7 +25,7 @@ router.route("/")
     const code = req.query.code;
     const options = {
       code: code,
-      redirecURI: "localhost:3000/users"
+      redirecURI: "localhost/users"
     };
     console.log("Authorization code:", code);
 
@@ -40,7 +40,7 @@ router.route("/")
       req.session.user = token;
 
       // redirect to main page
-      res.redirect("https://eseos.herokuapp.com:3000/users");
+      res.redirect("https://eseos.herokuapp.com/users");
     } catch(error) {
       console.error("Error while fetching access token.", error.message);
       return res.status(500).json('Authentication Failed!');
