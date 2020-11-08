@@ -1,0 +1,45 @@
+package com.eseos.tempoback.security;
+
+import com.eseos.tempoback.repository.UserRepository;
+import com.eseos.tempoback.model.User;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * Authenticate a user from the database.
+ */
+@Component("userDetailsService")
+@Slf4j
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(final String login) {
+        int id = Integer.parseInt(login);
+        log.debug("Authenticating {}", id);
+
+        User user = userRepository.findUserById(id).orElse(null);
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + id + " was not found in the database");
+        }
+
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRang());
+        grantedAuthorities.add(grantedAuthority);
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),
+                grantedAuthorities);
+    }
+}
