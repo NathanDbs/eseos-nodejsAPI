@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Horaire entity
  */
 @Entity
-@Table(name = "planning")
+@Table(name = "public.planning")
 @Getter
 @Setter
 @NoArgsConstructor
