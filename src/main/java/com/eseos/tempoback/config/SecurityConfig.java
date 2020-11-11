@@ -77,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/styles/**")
                 .antMatchers("/views/**")
                 .antMatchers("/i18n/**")
-                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**");
+                .antMatchers("/api/**","/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**");
     }
 
     @Override
@@ -113,11 +113,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
+                .antMatchers("/api/**","/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/user/resetPassword/**").permitAll()
                 .antMatchers("/user/current").authenticated()
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/**").authenticated()
+                //.antMatchers("/**").authenticated()
                 .antMatchers("/metrics/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
                 .antMatchers("/health/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
                 .antMatchers("/trace/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
@@ -130,8 +131,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/env/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
                 .antMatchers("/trace/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
                 .antMatchers("/api-docs/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/protected/**").authenticated()
-                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**").permitAll();
+                .antMatchers("/protected/**").authenticated();
     }
 
     @Bean

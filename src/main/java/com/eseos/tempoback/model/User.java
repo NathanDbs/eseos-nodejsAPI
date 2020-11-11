@@ -15,7 +15,7 @@ import java.io.Serializable;
  * User entity
  */
 @Entity
-@Table(name = "public.comptes")
+@Table(name = "comptes",schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor
