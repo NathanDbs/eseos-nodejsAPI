@@ -6,7 +6,6 @@ import com.eseos.tempoback.errorhandling.ErrorUtils;
 import com.eseos.tempoback.exceptions.RelatedDataException;
 import com.eseos.tempoback.exceptions.StrongPasswordException;
 import com.eseos.tempoback.exceptions.UniqueFieldException;
-import com.eseos.tempoback.model.PasswordResetToken;
 import com.eseos.tempoback.model.User;
 import com.eseos.tempoback.service.UserService;
 import com.eseos.tempoback.validator.StrongPasswordValidator;
@@ -120,40 +119,6 @@ public class HoraireController {
         }
 
         this.userService.deleteUser(user);
-    }
-
-    /**
-     * Check if the user can reset the password
-     * @param token the token
-     */
-    @PostMapping(value = "/resetPassword/check")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void checkResetPassword(@RequestParam("token") String token) {
-        PasswordResetToken passwordResetToken = userService.validatePasswordResetToken(token);
-        if (passwordResetToken == null) {
-            throw new BadCredentialsException(ErrorUtils.RESET_PASSWORD_INVALID_TOKEN);
-        }
-    }
-
-    /**
-     * Save the new password of the user in reset context
-     * @param resetPasswordDTO the new password with the correct token
-     * @throws StrongPasswordException strong password exception
-     */
-    @PostMapping(value = "/resetPassword/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void saveResetPassword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) throws StrongPasswordException {
-        PasswordResetToken passwordResetToken = userService.validatePasswordResetToken(resetPasswordDTO.getToken());
-        if (passwordResetToken == null) {
-            throw new BadCredentialsException(ErrorUtils.RESET_PASSWORD_INVALID_TOKEN);
-        }
-        strongPasswordValidator.isValid(resetPasswordDTO.getNewPassword());
-
-        User user = passwordResetToken.getUser();
-        user.setPassword(passwordEncoder.encode(resetPasswordDTO.getNewPassword()));
-        userService.saveUser(user);
-
-        userService.deletePasswordResetTokenForUser(user);
     }
 
 }
