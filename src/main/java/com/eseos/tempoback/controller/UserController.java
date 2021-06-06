@@ -44,8 +44,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/user")
 public class UserController {
 
-    @Value("${tempo.user.reset.password.expiration.time}")
-    private int resetPasswordExpirationTime;
+/*     @Value("${tempo.user.reset.password.expiration.time}")
+    private int resetPasswordExpirationTime; */
 
     @Autowired
     private UserService userService;

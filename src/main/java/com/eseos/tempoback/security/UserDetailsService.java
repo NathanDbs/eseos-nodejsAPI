@@ -31,8 +31,13 @@ public class UserDetailsService implements org.springframework.security.core.use
         log.debug("Authenticating {}", id);
 
         User user = userRepository.findUserById(id).orElse(null);
+
+
         if (user == null) {
+            log.debug("USER non trouvé en base");
             throw new UsernameNotFoundException("User " + id + " was not found in the database");
+        }else{
+            log.debug("user trouvé en base ! YOUPI !");
         }
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
