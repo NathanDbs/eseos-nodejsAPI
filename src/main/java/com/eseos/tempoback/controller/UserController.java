@@ -87,6 +87,21 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Get specific user
+     * 
+     * @return a user
+     */
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getSpecificUser(@PathVariable("id") int id) {
+        if(!this.userService.findUserById(id).map(user -> modelMapper.map(user, UserDTO.class)).isPresent()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(modelMapper.map(this.userService.findUserById(id).map(user -> modelMapper.map(user, UserDTO.class)).orElse(null), UserDTO.class));
+    }
+
+
     /**
      * Add a new user
      * 
