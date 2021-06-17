@@ -59,10 +59,11 @@ public class SwaggerConfig implements WebMvcConfigurer{
                 .build();
     }
 
-    /**
+/**
      * Swagger configuration
      * @return the swagger configuration
      */
+       /*  
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -71,7 +72,7 @@ public class SwaggerConfig implements WebMvcConfigurer{
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
-    }
+    } */
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
