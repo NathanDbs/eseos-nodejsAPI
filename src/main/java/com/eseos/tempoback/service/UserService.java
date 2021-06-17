@@ -5,7 +5,6 @@ import com.eseos.tempoback.repository.UserRepository;
 import com.eseos.tempoback.errorhandling.ErrorUtils;
 import com.eseos.tempoback.model.PasswordResetToken;
 import com.eseos.tempoback.model.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ import java.util.Optional;
  * User service
  */
 @Service
-@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;

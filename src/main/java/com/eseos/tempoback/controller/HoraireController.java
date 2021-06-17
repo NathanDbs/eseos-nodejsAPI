@@ -1,6 +1,5 @@
 package com.eseos.tempoback.controller;
 
-import com.eseos.tempoback.dto.ResetPasswordDTO;
 import com.eseos.tempoback.dto.UserDTO;
 import com.eseos.tempoback.errorhandling.ErrorUtils;
 import com.eseos.tempoback.exceptions.RelatedDataException;
@@ -9,14 +8,12 @@ import com.eseos.tempoback.exceptions.UniqueFieldException;
 import com.eseos.tempoback.model.User;
 import com.eseos.tempoback.service.UserService;
 import com.eseos.tempoback.validator.StrongPasswordValidator;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,7 +29,6 @@ import java.util.stream.Collectors;
  * Controller for users
  */
 @RestController
-@Slf4j
 @RequestMapping(value = "/horaire")
 public class HoraireController {
 

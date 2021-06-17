@@ -19,7 +19,6 @@ import com.eseos.tempoback.validator.StrongPasswordValidator;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +33,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Controller for users
  */
-@RestController
-@Slf4j
+@RestController 
 @RequestMapping(value = "/user")
 public class UserController {
 

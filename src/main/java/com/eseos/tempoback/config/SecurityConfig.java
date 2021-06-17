@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -35,9 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("3600")
     private int serverRememberMeTimeout;
-
-    @Autowired
-    private Environment env;
 
     @Autowired
     private AuthentificationSuccessHandlerImpl authentificationSuccessHandler;

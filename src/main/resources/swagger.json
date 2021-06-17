@@ -1,0 +1,480 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "Documentation de l'API du club ESE'OS.",
+      "version": "1.0.0",
+      "title": "API-ESEOS",
+      "contact": {
+        "name": "Nathan Dubois",
+        "email": "nathan.dubois@reseau.eseo.fr"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "host": "eseos.herokuapp.com",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Login",
+        "description": "Requête permettant de se logger"
+      },
+      {
+        "name": "Horaire",
+        "description": "Gère les horaires des utilisateurs"
+      },
+      {
+        "name": "User",
+        "description": "Gère les utilisateurs"
+      }
+    ],
+    "paths": {
+      "/login": {
+        "post": {
+          "tags": [
+            "Login"
+          ],
+          "summary": "Se logger dans l'application",
+          "operationId": "loginrUsingPOST",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "userDTO",
+              "description": "userDTO",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Created",
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/horaire": {
+        "get": {
+          "tags": [
+            "Horaire"
+          ],
+          "summary": "getAllUsers",
+          "operationId": "getAllUsersUsingGET",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/UserDTO"
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        },
+        "post": {
+          "tags": [
+            "Horaire"
+          ],
+          "summary": "addUser",
+          "operationId": "addUserUsingPOST",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "userDTO",
+              "description": "userDTO",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Created",
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/horaire/current": {
+        "get": {
+          "tags": [
+            "Horaire"
+          ],
+          "summary": "getCurrentUser",
+          "operationId": "getCurrentUserUsingGET",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/horaire/{id}": {
+        "delete": {
+          "tags": [
+            "Horaire"
+          ],
+          "summary": "deleteUser",
+          "operationId": "deleteUserUsingDELETE",
+          "produces": [
+            "*/*"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "id",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/user": {
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "summary": "getAllUsers",
+          "operationId": "getAllUsersUsingGET_1",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/UserDTO"
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        },
+        "post": {
+          "tags": [
+            "User"
+          ],
+          "summary": "addUser",
+          "operationId": "addUserUsingPOST_1",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "userDTO",
+              "description": "userDTO",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Created",
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/user/current": {
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "summary": "getCurrentUser",
+          "operationId": "getCurrentUserUsingGET_1",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/user/update": {
+        "post": {
+          "tags": [
+            "User"
+          ],
+          "summary": "updateUser",
+          "operationId": "updateUserUsingPOST",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "*/*"
+          ],
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "userDTO",
+              "description": "userDTO",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "201": {
+              "description": "Created"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "deprecated": false
+        }
+      },
+      "/user/{id}": {
+        "delete": {
+          "tags": [
+            "User"
+          ],
+          "summary": "deleteUser",
+          "operationId": "deleteUserUsingDELETE_1",
+          "produces": [
+            "*/*"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "id",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "name",
+              "in": "query",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "204": {
+              "description": "No Content"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            }
+          },
+          "deprecated": false
+        }
+      }
+    },
+    "definitions": {
+      "UserDTO": {
+        "type": "object",
+        "properties": {
+          "commentaire": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "nbachat": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nbprestation": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nbprobleme": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "password": {
+            "type": "string"
+          },
+          "rang": {
+            "type": "string"
+          }
+        },
+        "title": "UserDTO"
+      }
+    }
+  }

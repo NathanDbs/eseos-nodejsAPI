@@ -1,9 +1,12 @@
 package com.eseos.tempoback.config;
 
-import io.swagger.annotations.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,6 +18,9 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.InMemorySwaggerResourcesProvider;
+import springfox.documentation.swagger.web.SwaggerResource;
+import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
@@ -22,6 +28,21 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan("com.eseos.tempoback.controller")
 public class SwaggerConfig implements WebMvcConfigurer{
 
+    @Primary
+    @Bean
+    public SwaggerResourcesProvider swaggerResourcesProvider(InMemorySwaggerResourcesProvider defaultResourcesProvider) {
+        return () -> {
+            SwaggerResource wsResource = new SwaggerResource();
+            wsResource.setName("Custom Swagger Spec");
+            wsResource.setSwaggerVersion("2.0");
+            wsResource.setLocation("/swagger.json");
+
+            List<SwaggerResource> resources = new ArrayList<>(defaultResourcesProvider.get());
+            resources.add(wsResource);
+            return resources;
+        };
+    }
+    
     /**
      * The API information
      * @return the API information
