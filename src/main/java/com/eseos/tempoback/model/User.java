@@ -48,6 +48,7 @@ public class User implements Serializable {
 
     @NotEmpty(message = ErrorUtils.USER_GRADE_EMPTY)
     @Column(name = "grade")
+    @Enumerated(EnumType.STRING)
     private GradeEnum grade;
 
     private String picture;
