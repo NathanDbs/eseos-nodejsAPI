@@ -1,17 +1,13 @@
 package com.eseos.tempoback.service;
 
-import com.eseos.tempoback.repository.PasswordResetTokenRepository;
 import com.eseos.tempoback.repository.UserRepository;
 import com.eseos.tempoback.errorhandling.ErrorUtils;
-import com.eseos.tempoback.model.PasswordResetToken;
 import com.eseos.tempoback.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,18 +16,17 @@ import java.util.Optional;
  */
 @Service
 public class UserService {
+    
 
     private final UserRepository userRepository;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     /**
      * Constructor
      * @param userRepository the user repository
      */
     @Autowired
-    public UserService(UserRepository userRepository, PasswordResetTokenRepository passwordResetTokenRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     /**
@@ -40,8 +35,8 @@ public class UserService {
      * @return an optional result with the user if the id exists
      * @throws UsernameNotFoundException the exception if the user does not exists
      */
-    public Optional<User> findUserById(int id) throws UsernameNotFoundException {
-        return userRepository.findUserById(id);
+    public Optional<User> findUserById(String email) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(email);
     }
 
         /**
@@ -59,8 +54,8 @@ public class UserService {
      * @param login the login to test
      * @return TRUE if the login already exists, else FALSE
      */
-    public boolean userLoginExists(String login) {
-        return this.userRepository.findUserById(Integer.parseInt(login)).isPresent();
+    public boolean userLoginExists(String email) {
+        return this.userRepository.findUserByEmail(email).isPresent();
     }
 
     /**
@@ -107,56 +102,21 @@ public class UserService {
     }
 
     /**
-     * Create a password reset token for one user
-     * @param user the user
-     * @param token the token
-     * @param resetPasswordExpirationTime the expiration time of the token
-     */
-    public void createPasswordResetTokenForUser(User user, String token, int resetPasswordExpirationTime) {
-        PasswordResetToken passwordResetToken = new PasswordResetToken();
-        passwordResetToken.setId(1);
-        passwordResetToken.setToken(token);
-        passwordResetToken.setUser(user);
-        passwordResetToken.setExpiryDate(OffsetDateTime.now().plusMinutes(resetPasswordExpirationTime));
-
-        this.passwordResetTokenRepository.save(passwordResetToken);
-    }
-
-    /**
-     * Validate a password reset token
-     * @param token the token to validate
-     * @return the password reset token or null
-     */
-    public PasswordResetToken validatePasswordResetToken(String token) {
-        final PasswordResetToken passwordResetToken = passwordResetTokenRepository.findPasswordResetTokenByToken(token).orElse(null);
-
-        if (passwordResetToken == null) {
-            return null;
-        }
-        if (passwordResetToken.getExpiryDate().isBefore(OffsetDateTime.now())) {
-            return null;
-        }
-        return passwordResetToken;
-    }
-
-    /**
-     * Delete a password reset token for one user
-     * @param user the user
-     */
-    @Transactional
-    public void deletePasswordResetTokenForUser(User user) {
-        this.passwordResetTokenRepository.deletePasswordResetTokensByUser(user);
-    }
-
-        /**
      * Update the user
-     * @param user the user to delete
+     * @param user the user to update
      */
-    public void updateUser(User user) throws EntityNotFoundException {
-        if(user.getId() != null){
-            Optional<User> optionalUser = this.userRepository.findById(user.getId());
+    public void updateUser(User user, boolean isAdmin) throws EntityNotFoundException {
+        if(user.getEmail() != null){
+            Optional<User> optionalUser = this.userRepository.findUserByEmail(user.getEmail());
             if (optionalUser.isPresent()) {
                 user.setPassword(optionalUser.get().getPassword());
+                user.setFirstName(optionalUser.get().getFirstName());
+                user.setLastName(optionalUser.get().getLastName());
+                user.setPicture(optionalUser.get().getPicture());
+                user.setEmail(optionalUser.get().getEmail());
+                if(isAdmin){
+                    user.setGrade(optionalUser.get().getGrade());
+                }
                 this.userRepository.save(user);
             }
         }else{

@@ -1,7 +1,6 @@
 package com.eseos.tempoback.model;
 
 import com.eseos.tempoback.errorhandling.ErrorUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +14,7 @@ import java.io.Serializable;
  * Horaire entity
  */
 @Entity
-@Table(name = "planning",schema = "public")
+@Table(name = "planning" , schema = "public" )
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,23 +22,18 @@ import java.io.Serializable;
 public class Horaire implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_planning")
-    private int id;
+    private int id_planning;
 
     @NotEmpty(message = ErrorUtils.HORAIRE_DATE_EMPTY)
-    @Column(name = "date_planning")
-    private String date_planning;
+    @Column(name = "datedebut")
+    private String date_debut;
     
     @NotEmpty(message = ErrorUtils.HORAIRE_CRENEAU_EMPTY)
-    @Column(name = "creneau")
-    private String creneau;    
+    @Column(name = "datefin")
+    private String date_fin;    
     
-    @NotEmpty(message = ErrorUtils.HORAIRE_NBMEMBRES_EMPTY)
-    @Column(name = "nbmembres")
-    private String nbmembres;
+    @NotEmpty(message = ErrorUtils.HORAIRE_MEMBRE_EMPTY)
+    @Column(name = "membre")
+    private String membre;
     
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "lastmember")
-	private String lastmember;
 }

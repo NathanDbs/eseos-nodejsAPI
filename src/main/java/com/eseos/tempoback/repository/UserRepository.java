@@ -12,13 +12,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    /**
-     * Find one user using the id
-     * @param id the id
-     * @return the user or an empty optional result
-     */
-    Optional<User> findUserById(Integer id);
-
        /**
      * Find one user using the email
      * @param email the email

@@ -34,14 +34,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
- * Controller for users
+ * Controller for reparations
  */
 @RestController 
-@RequestMapping(value = "/user")
-public class UserController {
-
-/*     @Value("${tempo.user.reset.password.expiration.time}")
-    private int resetPasswordExpirationTime; */
+@RequestMapping(value = "/repa")
+public class ReparationController {
 
     @Autowired
     private UserService userService;
@@ -89,12 +86,12 @@ public class UserController {
      * 
      * @return a user
      */
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getSpecificUser(@PathVariable("id") int id) {
-        if(!this.userService.findUserById(id).map(user -> modelMapper.map(user, UserDTO.class)).isPresent()){
+    @GetMapping(value = "/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getSpecificUser(@PathVariable("email") String email) {
+        if(!this.userService.findUserByEmail(email).map(user -> modelMapper.map(user, UserDTO.class)).isPresent()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok().body(modelMapper.map(this.userService.findUserById(id).map(user -> modelMapper.map(user, UserDTO.class)).orElse(null), UserDTO.class));
+        return ResponseEntity.ok().body(modelMapper.map(this.userService.findUserByEmail(email).map(user -> modelMapper.map(user, UserDTO.class)).orElse(null), UserDTO.class));
     }
 
 
@@ -137,7 +134,7 @@ public class UserController {
         Optional<User> potentialUser = this.userService.findUserByEmail(principal.getName());
         if (potentialUser.isEmpty()) {
             throw new EntityNotFoundException(ErrorUtils.USER_NOT_FOUND);
-        } else if (potentialUser.get().isAdmin() || potentialUser.get().getEmail() == userDTO.getMail()) {
+        } else if (potentialUser.get().isAdmin()|| potentialUser.get().getEmail() == userDTO.getMail()){
             this.userService.updateUser(modelMapper.map(userDTO, User.class),potentialUser.get().isAdmin());
         } else {
             throw new EntityNotFoundException(ErrorUtils.ADD_USER_FORBIDDEN);
@@ -147,7 +144,7 @@ public class UserController {
     /**
      * Delete one user if it's possible
      * 
-     * @param email the email of the user
+     * @param email the identifier of the user
      * @throws RelatedDataException an exception if the user is related with others
      *                              datas
      */

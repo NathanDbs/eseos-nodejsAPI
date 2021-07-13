@@ -26,25 +26,6 @@ public class HoraireService {
     }
 
     /**
-     * Find one horaire by his id
-     * @param id the id of the horaire
-     * @return an optional result with the horaire if the id exists
-     * @ the exception if the horaire does not exists
-     */
-    public Optional<Horaire> findHoraireById(int id)  {
-        return horaireRepository.findHoraireById(id);
-    }
-
-    /**
-     * Check if a login is already use by one horaire
-     * @param login the login to test
-     * @return TRUE if the login already exists, else FALSE
-     */
-    public boolean horaireLoginExists(String login) {
-        return this.horaireRepository.findHoraireById(Integer.parseInt(login)).isPresent();
-    }
-
-    /**
      * Save a horaire
      * @param horaire the horaire to save
      * @return the horaire saved
@@ -62,12 +43,11 @@ public class HoraireService {
     }
 
     /**
-     * Fin one horaire with id
-     * @param id the identifier of the horaire
-     * @return an optional result with the horaire if the id exists
+     * Find one horaire
+     * @return horaire
      */
-    public Optional<Horaire> findHoraireById(Integer id) {
-        return this.horaireRepository.findById(id);
+    public Optional<Horaire> findHoraire(String email) {
+        return this.horaireRepository.findHoraireByMembre(email);
     }
 
     /**

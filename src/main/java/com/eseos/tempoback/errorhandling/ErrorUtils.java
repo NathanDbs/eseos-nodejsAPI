@@ -8,6 +8,7 @@ public class ErrorUtils {
     public static final String AUTHORITY_NAME_SIZE = "Le rôle de l'utilisateur doit faire entre 1 et 50 caractères";
     public static final String AUTHORITY_NAME_INVALID = "Le rôle de l'utilisateur est inconnu";
 
+    public static final String USER_GRADE_EMPTY = "Vous devez renseigner le grade de l'utilisateur";
     public static final String USER_LOGIN_EMPTY = "Vous devez renseigner le login de l'utilisateur";
     public static final String USER_LOGIN_SIZE = "Le login de l'utilisateur ne doit pas dépasser 50 caractères";
     public static final String USER_LOGIN_NOT_UNIQUE = "Le login de l'utilisateur existe déjà";
@@ -29,5 +30,15 @@ public class ErrorUtils {
 
     public static final String HORAIRE_DATE_EMPTY = "La date ne peut pas être vide";
     public static final String HORAIRE_CRENEAU_EMPTY = "Le créneau ne peut pas être vide";
-    public static final String HORAIRE_NBMEMBRES_EMPTY = "Le nombre de membres ne peut pas être vide";
+    public static final String HORAIRE_MEMBRE_EMPTY = "Un membre doit être associé à l'horaire";
+
+    public static final String DELETE_ADD_HORAIRE_FORBIDDEN = "Vous n'avez pas les droits pour supprimer ou ajouter un creneau";
+    public static final String HORAIRE_NOT_FOUND = "Ce créneau n'existe pas";
+
+    
+    public static final String REPA_REPARATEUR_EMPTY = "Vous devez renseigner l'identité du réparateur";
+    public static final String REPA_CLIENT_EMPTY = "Vous devez renseigner l'identité du client";
+    public static final String REPA_ETAT_REPARATION_EMPTY = "Vous devez renseigner l'état de la réparation";
+    public static final String REPA_ETAT_DEVIS_EMPTY = "Vous devez renseigner l'état du devis";
+    public static final String REPA_NOT_FOUND = "Aucun utilisateur trouvé pour cet identifiant";
 }

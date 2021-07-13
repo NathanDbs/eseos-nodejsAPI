@@ -1,6 +1,6 @@
 package com.eseos.tempoback.config;
 
-import com.eseos.tempoback.model.enums.AuthorityEnum;
+import com.eseos.tempoback.model.enums.GradeEnum;
 import com.eseos.tempoback.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,18 +115,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/current").authenticated()
                 .antMatchers("/user/**").authenticated()
                 //.antMatchers("/**").authenticated()
-                .antMatchers("/metrics/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/health/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/trace/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/dump/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/shutdown/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/beans/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/configprops/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/info/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/autoconfig/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/env/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/trace/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
-                .antMatchers("/api-docs/**").hasAuthority(AuthorityEnum.ADMIN.getAuthority())
+                .antMatchers("/metrics/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/health/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/trace/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/dump/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/shutdown/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/beans/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/configprops/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/info/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/autoconfig/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/env/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/trace/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
+                .antMatchers("/api-docs/**").hasAuthority(GradeEnum.ADMIN.getGrade ())
                 .antMatchers("/protected/**").authenticated();
     }
 

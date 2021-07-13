@@ -1,6 +1,7 @@
 package com.eseos.tempoback.security;
 
-import com.eseos.tempoback.model.enums.AuthorityEnum;
+import com.eseos.tempoback.model.enums.GradeEnum;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,11 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
  * Utility class for Spring Security.
  */
 public class SecurityUtils {
-
-    public final static String CONSULTANT = AuthorityEnum.CONSULTANT.getAuthority();
-    public final static String COMMERCIAL = AuthorityEnum.COMMERCIAL.getAuthority();
-    public final static String MANAGER = AuthorityEnum.MANAGER.getAuthority();
-    public final static String ADMIN = AuthorityEnum.ADMIN.getAuthority();
 
     private SecurityUtils() {
     }
@@ -43,14 +39,14 @@ public class SecurityUtils {
     /**
      * Check if user owns a role.
      */
-    public static boolean isAuthorized(AuthorityEnum authority) {
+    public static boolean isAuthorized(GradeEnum authority) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
 
         if (authentication != null) {
             if (authentication.getAuthorities() != null) {
                 return authentication.getAuthorities().parallelStream().anyMatch(
-                        grantedAuthority -> grantedAuthority.getAuthority().equals(authority.getAuthority())
+                        grantedAuthority -> grantedAuthority.getAuthority().equals(authority.getGrade())
                 );
             }
         }

@@ -1,6 +1,6 @@
 package com.eseos.tempoback.validator;
 
-import com.eseos.tempoback.model.enums.AuthorityEnum;
+import com.eseos.tempoback.model.enums.GradeEnum;
 import com.eseos.tempoback.validator.constraint.AuthorityConstraint;
 
 import javax.validation.ConstraintValidator;
@@ -24,7 +24,7 @@ public class AuthorityValidator implements ConstraintValidator<AuthorityConstrai
         }
 
         try {
-            AuthorityEnum.valueOf(authority.toUpperCase());
+            GradeEnum.valueOf(authority);
             return true;
         } catch (IllegalArgumentException ex) {
             return false;

@@ -26,22 +26,21 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(final String login) {
-        int id = Integer.parseInt(login);
-        log.debug("Authenticating {}", id);
+    public UserDetails loadUserByUsername(final String email) {
+        log.debug("Authenticating {}", email);
 
-        User user = userRepository.findUserById(id).orElse(null);
+        User user = userRepository.findUserByEmail(email).orElse(null);
 
 
         if (user == null) {
             log.debug("USER non trouvé en base");
-            throw new UsernameNotFoundException("User " + id + " was not found in the database");
+            throw new UsernameNotFoundException("User " + email + " was not found in the database");
         }else{
             log.debug("user trouvé en base ! YOUPI !");
         }
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRang());
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getGrade().getGrade());
         grantedAuthorities.add(grantedAuthority);
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),

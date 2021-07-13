@@ -1,32 +1,37 @@
 package com.eseos.tempoback.controller;
 
-import com.eseos.tempoback.dto.UserDTO;
+import java.security.Principal;
+import java.util.Date;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+
+import com.eseos.tempoback.dto.HoraireDTO;
 import com.eseos.tempoback.errorhandling.ErrorUtils;
 import com.eseos.tempoback.exceptions.RelatedDataException;
-import com.eseos.tempoback.exceptions.StrongPasswordException;
 import com.eseos.tempoback.exceptions.UniqueFieldException;
+import com.eseos.tempoback.model.Horaire;
 import com.eseos.tempoback.model.User;
+import com.eseos.tempoback.service.HoraireService;
 import com.eseos.tempoback.service.UserService;
-import com.eseos.tempoback.validator.StrongPasswordValidator;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller for users
+ * Controller for horaires
  */
 @RestController
 @RequestMapping(value = "/horaire")
@@ -36,85 +41,73 @@ public class HoraireController {
     private int resetPasswordExpirationTime;
 
     @Autowired
+    private HoraireService horaireService;
+
+    @Autowired
     private UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private StrongPasswordValidator strongPasswordValidator;
 
     @Autowired
     private ModelMapper modelMapper;
 
     /**
-     * Get the current user
-     * @return the current user
+     * Voir si le club est ouvert
+     * @return a boolean 
      */
-    @GetMapping(value = "/current", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/isOpen", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getCurrentUser(Principal principal) {
-        Optional<User> potentialUser = this.userService.findUserByEmail(principal.getName());
-        if (potentialUser.isEmpty()) {
-            throw new EntityNotFoundException(ErrorUtils.USER_NOT_FOUND);
-        }
-
-        return modelMapper.map(potentialUser.get(), UserDTO.class);
-    }
-
-    /**
-     * Get all users
-     * @return a list of users
-     */
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getAllUsers() {
-        return this.userService.findAllUsers()
+    public boolean isOpen() {         
+        return !this.horaireService.findAllHoraires()
                 .stream()
-                .map(user -> modelMapper.map(user, UserDTO.class))
-                .collect(Collectors.toList());
+                .map(horaire -> modelMapper.map(horaire, HoraireDTO.class))
+                .filter(horaire -> (horaire.getDate_debut().compareTo(new Date()) < 0) && (horaire.getDate_fin().compareTo(new Date()) > 0))
+                .collect(Collectors.toList()).isEmpty();
     }
 
     /**
-     * Add a new user
-     * @param userDTO the user to add
-     * @return the user created
+     * Ajoute un créneau
+     * @param horaireDTO le creaneau a ajouter
+     * @return un httpStatus created ou notFound
      */
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<UserDTO> addUser(@Valid @RequestBody UserDTO userDTO) throws UniqueFieldException, StrongPasswordException {
-        strongPasswordValidator.isValid(userDTO.getPassword());
-
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-
-        User newUser = this.userService.saveUser(modelMapper.map(userDTO, User.class));
-        return ResponseEntity.created(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(newUser.getId())
-                .toUri())
-                .body(modelMapper.map(newUser, UserDTO.class));
+    public HttpStatus addHoraire(@Valid @RequestBody HoraireDTO horaireDTO, Principal principal) throws UniqueFieldException {
+        try{
+            Optional<User> potentialUser = this.userService.findUserByEmail(horaireDTO.getMembre());
+            Optional<User> principalUser = this.userService.findUserByEmail(principal.getName());
+            if(principalUser.get().canAddOrDeleteCreneauAndUpdateDevis()){
+                if(!potentialUser.isPresent()){throw new EntityNotFoundException(ErrorUtils.USER_NOT_FOUND);}
+                this.horaireService.saveHoraire(modelMapper.map(horaireDTO, Horaire.class));
+                return HttpStatus.CREATED;
+            }else{
+                throw new Error();
+            }
+        }catch(Error e){
+            return HttpStatus.NOT_FOUND;
+        }
     }
 
     /**
-     * Delete one user if it's possible
-     * @param id the identifier of the user
+     * Supprime un creneau
+     * @param creaneau le creneau
      * @throws RelatedDataException an exception if the user is related with others datas
      */
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable("id") String id) throws RelatedDataException {
-        Optional<User> potentialUser = this.userService.findUserById(Integer.parseInt(id));
-        if (potentialUser.isEmpty()) {
-            throw new EntityNotFoundException(ErrorUtils.USER_NOT_FOUND);
-        }
+    public void deleteCreaneau(@Valid @RequestBody HoraireDTO horaireDTO, Principal principal) throws RelatedDataException {
+        Optional<Horaire> potentialHoraire = this.horaireService.findHoraire(horaireDTO.getMembre());
 
-        final User user = potentialUser.get();
-        if (!this.userService.canDeleteUser(user)) {
-            throw new RelatedDataException(ErrorUtils.DELETE_USER_FORBIDDEN);
-        }
+        Optional<User> principalUser = this.userService.findUserByEmail(principal.getName());
+        if(principalUser.get().canAddOrDeleteCreneauAndUpdateDevis()){
+            if (potentialHoraire.isEmpty()) {
+                throw new EntityNotFoundException(ErrorUtils.HORAIRE_NOT_FOUND);
+            }
 
-        this.userService.deleteUser(user);
+            final Horaire horaire = potentialHoraire.get();
+
+            this.horaireService.deleteHoraire(horaire);
+        }else{
+            throw new RelatedDataException(ErrorUtils.DELETE_ADD_HORAIRE_FORBIDDEN);
+        }
     }
 
 }

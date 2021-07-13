@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import com.eseos.tempoback.model.enums.GradeEnum;
 
 import javax.validation.constraints.*;
 
@@ -18,12 +19,10 @@ import javax.validation.constraints.*;
 @ToString
 public class UserDTO {
 
-    private Integer id;
-
     @NotEmpty(message = ErrorUtils.USER_PASSWORD_EMPTY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Size(min = 10, max = 100)
-    private String password;
+    private String _password;
 
     @NotEmpty(message = ErrorUtils.USER_FIRST_NAME_EMPTY)
     @Size(max = 255, message = ErrorUtils.USER_FIRST_NAME_SIZE)
@@ -36,15 +35,10 @@ public class UserDTO {
     @NotEmpty(message = ErrorUtils.USER_EMAIL_EMPTY)
     @Size(max = 255, message = ErrorUtils.USER_EMAIL_SIZE)
     @Email(message = ErrorUtils.USER_EMAIL_FORMAT)
-    private String email;
+    private String mail;
 
-    private String commentaire;
+    private GradeEnum grade;
 
-    private String rang;
+    private String picture;
 
-    private int nbprestation;
-
-    private int nbprobleme;
-
-    private int nbachat;
 }
