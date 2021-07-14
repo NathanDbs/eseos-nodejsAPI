@@ -20,7 +20,7 @@
             xhttp.open("POST", "https://eseos.herokuapp.com/login", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.withCredentials = true;
-            var login = document.getElementById("login").value;
+            var login = document.getElementById("login").value;   
             var password = document.getElementById("password").value;
             xhttp.send("login=" + login + "&password=" + password);
 
