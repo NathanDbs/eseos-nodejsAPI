@@ -27,15 +27,14 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String email) {
-        String testemail = "nathan.dubois@reseau.eseo.fr";
-        log.debug("Authenticating {}", testemail);
+        log.debug("Authenticating {}", email);
 
-        User user = userRepository.findUserByEmail(testemail).orElse(null);
+        User user = userRepository.findUserByEmail(email).orElse(null);
 
 
         if (user == null) {
             log.debug("USER non trouvé en base");
-            throw new UsernameNotFoundException("User " + testemail + " was not found in the database");
+            throw new UsernameNotFoundException("User " + email + " was not found in the database");
         }else{
             log.debug("user trouvé en base ! YOUPI !");
         }

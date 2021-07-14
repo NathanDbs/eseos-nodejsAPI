@@ -5,6 +5,38 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p>yo</p>
+    <input type="text" id="login" placeholder="email">
+    <input type="password" id="password" placeholder="mdp">
+    <button type="submit" onclick="UserAction()">Login</button>
+
+    <script>
+        function UserAction() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert(this.responseText);
+                }
+            };
+            xhttp.open("POST", "https://eseos.herokuapp.com/login", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.withCredentials = true;
+            var login = document.getElementById("login").value;
+            var password = document.getElementById("password").value;
+            xhttp.send("login=" + login + "&password=" + password);
+
+
+            xhttp.onreadystatechange = function() {
+                if(this.readyState == this.HEADERS_RECEIVED) {
+                    var cookie = xhttp.getResponseHeader("Set-Cookie");
+                    console.log(cookie)
+                    document.cookie = cookie;
+
+                    var setting = browser.cookies.set(cookie)
+                }
+            }
+
+        }
+    </script>
+    
 </body>
 </html>

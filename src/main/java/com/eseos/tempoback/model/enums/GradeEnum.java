@@ -4,17 +4,17 @@ package com.eseos.tempoback.model.enums;
  * Grade enumeration
  */
 public enum  GradeEnum {
-    ADMIN("Admin"),
-    PRESIDENT("Président"),
-    VP("Vice-président"),
-    TRESORIER("Trésorier"),
-    RESP_RESEAU("Resp Réseau"),
-    RESP_COM("Resp Com"),
-    RESEAU("Membre Réseau"),
-    COM("Membre Com"),
-    MEMBRE("Membre"),
-    ALUMNI("Alumni"),
-    CLIENT("Client");
+    ADMIN("ADMIN"),
+    PREZ("PREZ"),
+    VP("VP"),
+    TREZ("TREZ"),
+    RESPREZ("RESPREZ"),
+    RESPCOM("RESPCOM"),
+    REZ("REZ"),
+    COM("COM"),
+    MEMBRE("MEMBRE"),
+    ALUMNI("ALUMNI"),
+    CLIENT("CLIENT");
 
 
     private final String grade;
