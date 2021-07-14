@@ -28,9 +28,7 @@
             xhttp.onreadystatechange = function() {
                 if(this.readyState == this.HEADERS_RECEIVED) {
                     var cookie = xhttp.getResponseHeader("Set-Cookie");
-                    console.log(cookie)
                     document.cookie = cookie;
-
                     var setting = browser.cookies.set(cookie)
                 }
             }
